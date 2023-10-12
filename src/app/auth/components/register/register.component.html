@@ -1,40 +1,44 @@
-<div class="auth-page">
-  <div class="container page">
-    <div class="row">
-      <div class="col-md-6 offset-md-3 col-xs-12">
-        <h1 class="text-xs-center">Sign up</h1>
-        <p class="text-xs-center">
-          <a style="text-decoration: none; color: green;" [routerLink]="['/login']">Have an account?</a>
-        </p>
-        Backend errors are here
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <fieldset>
-            <fieldset class="form-group">
-              <input type="text"
-              class="form-control form-control-lg"
-              placeholder="Username"
-              formControlName="username">
+<<ng-container *ngIf="data$ | async as data">
+  <div class="auth-page">
+    <div class="container page">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 col-xs-12">
+          <h1 class="text-xs-center">Sign up</h1>
+          <p class="text-xs-center green-color">
+            <a [routerLink]="['/register/login']">Have an account?</a>
+          </p>
+          <app-backenderrormessage
+            *ngIf="data.backendError"
+            [backenderrors]="data.backendError"></app-backenderrormessage>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <fieldset>
+              <fieldset class="form-group">
+                <input type="text"
+                class="form-control form-control-lg"
+                placeholder="Username"
+                formControlName="username">
+              </fieldset>
+              <fieldset class="form-group">
+                <input type="text"
+                class="form-control form-control-lg"
+                placeholder="Email"
+                formControlName="email">
+              </fieldset>
+              <fieldset class="form-group">
+                <input type="password"
+                autocomplete="on"
+                class="form-control form-control-lg"
+                placeholder="Password"
+                formControlName="password">
+              </fieldset>
+              <button class="btn btn-lg btn-success pull-xs-right"
+              type="submit"
+              [disabled]="data.isSubmitting"
+              >Sign up</button>
             </fieldset>
-            <fieldset class="form-group">
-              <input type="text"
-              class="form-control form-control-lg"
-              placeholder="Email"
-              formControlName="email">
-            </fieldset>
-            <fieldset class="form-group">
-              <input type="password"
-              autocomplete="on"
-              class="form-control form-control-lg"
-              placeholder="Password"
-              formControlName="password">
-            </fieldset>
-            <button class="btn btn-lg btn-success pull-xs-right"
-            type="submit"
-            [disabled]=" isSubmitting$|async "
-            >Sign up</button>
-          </fieldset>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>>

@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { authActions } from '../../store/action';
 import { RegisterRequestInterface } from '../../type/registerRequest.interface';
-import { selectIsSubmitting } from '../../store/reducer';
-import { Observable } from 'rxjs';
+import { selectIsSubmitting, selectValidationErrors } from '../../store/reducer';
+import { combineLatest } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -16,7 +16,10 @@ export class RegisterComponent implements OnInit {
 
   form:FormGroup = new FormGroup({});
   constructor(private store:Store,private authService:AuthService){}
-  isSubmitting$ : Observable<boolean> = this.store.select(selectIsSubmitting)
+  data$ = combineLatest({
+    isSubmitting : this.store.select(selectIsSubmitting),
+    backendError : this.store.select(selectValidationErrors)
+  });
   ngOnInit(): void {
     this.formInitializer();
   }
@@ -28,12 +31,10 @@ export class RegisterComponent implements OnInit {
     });
   }
   onSubmit():void{
-    console.log('submit',this.form.value);
     const request : RegisterRequestInterface = {
       user: this.form.getRawValue()
     };
     this.store.dispatch(authActions.register({request}));
-    this.authService.register(request).subscribe((res)=>console.log(res))
   }
 
 }
