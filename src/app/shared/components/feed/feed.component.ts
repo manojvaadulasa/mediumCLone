@@ -16,13 +16,8 @@ export class FeedComponent implements OnInit{
     error : this.store.select(selectError),
     feed : this.store.select(selectFeedData)
   });
-  articles : any;
   constructor(private store : Store){}
   ngOnInit(): void {
     this.store.dispatch(feedActions.getFeed({url : this.apiUrl}));
-    this.store.select(selectFeedData).subscribe((res:GetFeedResponseInterface)=>{
-      console.log(res)
-      this.articles=res;
-    });
   }
 }
